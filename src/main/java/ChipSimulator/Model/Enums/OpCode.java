@@ -22,5 +22,17 @@ public enum OpCode {
     SW,
     BEQ,
     BNE,
-    ORI
+    ORI,
+    INVALID_OPCODE;
+    
+    public static OpCode opCodeFromString(String opCode){
+        if (opCode != null) {
+            try {
+                return OpCode.valueOf(opCode.toLowerCase());
+            } catch (IllegalArgumentException e) {
+                return INVALID_OPCODE;
+            }
+        }
+        return INVALID_OPCODE;
+    }
 }

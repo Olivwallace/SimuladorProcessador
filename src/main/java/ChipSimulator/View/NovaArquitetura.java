@@ -4,17 +4,29 @@
  */
 package ChipSimulator.View;
 
+import ChipSimulator.Model.Enums.TypeProcessador;
+import ChipSimulator.Model.Enums.TypeSuport;
+import ViewModel.SimuladorViewModel;
+import ChipSimulator.Interfaces.Delegate;
+
 /**
  *
  * @author Walla
  */
 public class NovaArquitetura extends javax.swing.JFrame {
-
+    
+    private Delegate delegate;
+    
     /**
      * Creates new form MainSimulator
      */
-    public NovaArquitetura() {
+    public NovaArquitetura(Delegate delegate) {
+        this.delegate = delegate;
         initComponents();
+    }
+
+    private NovaArquitetura() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     /**
@@ -43,8 +55,6 @@ public class NovaArquitetura extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nova Arquitetura");
         setMaximizedBounds(new java.awt.Rectangle(0, 0, 320, 360));
-        setMaximumSize(new java.awt.Dimension(320, 360));
-        setPreferredSize(new java.awt.Dimension(320, 360));
         setResizable(false);
 
         jLabel1.setText("Nome: ");
@@ -60,8 +70,18 @@ public class NovaArquitetura extends javax.swing.JFrame {
         arq_suport.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sem Suporte", "IMT", "BMT", "SMT" }));
 
         button_cancel.setText("Cancelar");
+        button_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_cancelActionPerformed(evt);
+            }
+        });
 
         button_save.setText("Salvar");
+        button_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_saveActionPerformed(evt);
+            }
+        });
 
         arq_threads.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1 Thread", "2 Threads", "3 Threads", "4 Threads" }));
 
@@ -124,6 +144,21 @@ public class NovaArquitetura extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void button_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_saveActionPerformed
+        SimuladorViewModel vm = SimuladorViewModel.instance;
+        vm.processador.setDefinicoes(
+                arq_name.getText(), 
+                TypeProcessador.typeProcess((String) arq_type.getSelectedItem()), 
+                TypeSuport.typeSuport((String) arq_suport.getSelectedItem()), 
+                arq_threads.getSelectedIndex() + 1);
+        delegate.notifyView();
+        this.dispose();
+    }//GEN-LAST:event_button_saveActionPerformed
+
+    private void button_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_cancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_button_cancelActionPerformed
 
     /**
      * @param args the command line arguments

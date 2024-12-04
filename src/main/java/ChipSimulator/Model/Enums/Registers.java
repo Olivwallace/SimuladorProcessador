@@ -10,8 +10,8 @@ package ChipSimulator.Model.Enums;
  */
 public enum Registers {
     zero,   // x0 - Registrador zero
-    Ra,     // x1 - Return Address
-    Sp,     // x2 - Stack Pointer
+    ra,     // x1 - Return Address
+    sp,     // x2 - Stack Pointer
     t0,     // x5 - Registrador temporário t0
     t1,     // x6 - Registrador temporário t1
     t2,     // x7 - Registrador temporário t2
@@ -37,6 +37,18 @@ public enum Registers {
     a2,     // x13 - Argumento 2
     a3,     // x14 - Argumento 3
     a4,     // x15 - Argumento 4
-    im;     // Marcar imediado
+    im,
+    invalid_register;     // Marcar imediado
+    
+    public static Registers registerFromString(String register){
+        if (register != null) {
+            try {
+                return Registers.valueOf(register);
+            } catch (IllegalArgumentException e) {
+                return invalid_register;
+            }
+        }
+        return invalid_register;
+    }
 }
 

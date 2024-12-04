@@ -13,12 +13,35 @@ import ChipSimulator.Model.Enums.TypeSuport;
  */
 public class Processador {
     // Definições do Processador
-    private String nome;
-    private TypeProcessador type;
-    private TypeSuport suport;
-    private int numThreads;
+    public String nome;
+    public TypeProcessador type;
+    public TypeSuport suport;
+    public Integer numThreads;
     
     // Pipeline Do Processador
+    Pipeline pipeline;
+    
+    public Processador(){
+        this.nome = "";
+        this.type = TypeProcessador.NONE;
+        this.suport = TypeSuport.NONE;
+        this.numThreads = 1;
+    }
+    
+    public void setDefinicoes(String nome, TypeProcessador type, TypeSuport suport, Integer numThreads){
+        this.nome = nome;
+        this.type = type;
+        this.suport = suport;
+        this.numThreads = numThreads;
+        
+        pipeline = new Pipeline(type, numThreads);
+    }
+    
+    public void setThreads(Thread[] threads){
+        if(pipeline != null){
+            pipeline.setThreads(threads);
+        }
+    }
     
     
     
@@ -26,11 +49,22 @@ public class Processador {
     public String toString(){
         return String.format(
         """
-            <html> 
-                <b>Nome:</b> %s
-                <b>Type:</b> %s | <b>Suporte:</b> %s | <b>Threads:</b> %d
-            </html>
+        <html> 
+        <b>Nome:</b> %s <br>
+        <b>Tipo:</b> %s | <b>Suporte:</b> %s | <b>Threads:</b> %d
+        </html>
         """, nome, type.toString(), suport.toString(), numThreads);
+    }
+    
+    public String getHardwareDescription(){
+        return String.format("""
+                             .ini
+                             ...name %s
+                             ...type %s
+                             .suport %s
+                             .thread %d
+                             .fim
+                             """, nome, type.toString(), suport.toString(), numThreads);
     }
     
 }

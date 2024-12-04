@@ -9,8 +9,18 @@ package ChipSimulator.Model.Enums;
  * @author Walla
  */
 public enum TypeProcessador {
+    NONE,
     Escalar,
     SuperEscalar;
+    
+    public static TypeProcessador typeProcess(String type){
+        if(type.toLowerCase().contains("super escalar")){
+            return SuperEscalar;
+        } else if(type.toLowerCase().contains("escalar")) {
+            return Escalar;
+        }
+        return NONE;
+    }
     
     @Override
     public String toString(){
@@ -20,6 +30,6 @@ public enum TypeProcessador {
             case SuperEscalar:
                 return "Super Escalar";
         }
-        return "";
+        return "Indefinido";
     }
 }

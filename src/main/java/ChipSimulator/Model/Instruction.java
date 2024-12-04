@@ -12,12 +12,14 @@ import ChipSimulator.Model.Enums.Registers;
  * @author Walla
  */
 public class Instruction {
+    private String threadOrigen;
     private OpCode opCode;
     private Registers[] registers;
     private int cycleIni;
     private int cycleFin;
     
-    Instruction(OpCode opCode, Registers out, Registers value1, Registers value2){
+    public Instruction(String threadID, OpCode opCode, Registers out, Registers value1, Registers value2){
+        this.threadOrigen = threadID;
         this.opCode = opCode;
         
         registers = new Registers[3];

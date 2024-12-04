@@ -4,12 +4,16 @@
  */
 package ChipSimulator.View;
 
+import ChipSimulator.Interfaces.Delegate;
+import ChipSimulator.Model.Processador;
+import ViewModel.SimuladorViewModel;
+
 
 /**
  *
  * @author Walla
  */
-public class Simulador extends javax.swing.JFrame {
+public class Simulador extends javax.swing.JFrame implements Delegate {
 
     /**
      * Creates new form Simulador
@@ -33,6 +37,9 @@ public class Simulador extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jFrame1 = new javax.swing.JFrame();
+        jMenuBar3 = new javax.swing.JMenuBar();
+        jMenu6 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
         jScrollPane1 = new javax.swing.JScrollPane();
         PainelPipeline = new javax.swing.JSplitPane();
         jPanel7 = new javax.swing.JPanel();
@@ -42,7 +49,7 @@ public class Simulador extends javax.swing.JFrame {
         PainelEstatisticas = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        current_arq = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -56,8 +63,8 @@ public class Simulador extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menu_new_arq = new javax.swing.JMenuItem();
         menu_import_arq = new javax.swing.JMenuItem();
-        menu_import_code = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        menu_thread = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
@@ -79,6 +86,12 @@ public class Simulador extends javax.swing.JFrame {
             jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
+
+        jMenu6.setText("File");
+        jMenuBar3.add(jMenu6);
+
+        jMenu7.setText("Edit");
+        jMenuBar3.add(jMenu7);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -143,9 +156,9 @@ public class Simulador extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Arquitetura");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("<html> <b>Nome: </b> Teste <br>\n<b>Tipo:</b> Escalar | <b>Suporte:</b> IMT | <b>#Threads:</b> 4 Threads\n\n\n</html>");
-        jLabel5.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        current_arq.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        current_arq.setText("<html> <b>Nome: </b> Teste <br> <b>Tipo:</b> Escalar | <b>Suporte:</b> IMT | <b>#Threads:</b> 4 Threads   </html>");
+        current_arq.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jTabbedPane1.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -248,7 +261,7 @@ public class Simulador extends javax.swing.JFrame {
                             .addGroup(PainelEstatisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel2)
                                 .addComponent(jLabel1)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(current_arq, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PainelEstatisticasLayout.createSequentialGroup()
                             .addContainerGap()
                             .addComponent(jTabbedPane1))
@@ -268,7 +281,7 @@ public class Simulador extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jLabel2)
                 .addGap(4, 4, 4)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(current_arq, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -293,16 +306,26 @@ public class Simulador extends javax.swing.JFrame {
         jMenu1.add(menu_new_arq);
 
         menu_import_arq.setText("Importar Arquitetura");
+        menu_import_arq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_import_arqActionPerformed(evt);
+            }
+        });
         jMenu1.add(menu_import_arq);
 
         jMenuBar1.add(jMenu1);
 
-        menu_import_code.setText("Threads");
+        jMenu8.setText("Threads");
 
-        jMenuItem2.setText("Importar Código");
-        menu_import_code.add(jMenuItem2);
+        menu_thread.setText("Importar Código");
+        menu_thread.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_threadActionPerformed(evt);
+            }
+        });
+        jMenu8.add(menu_thread);
 
-        jMenuBar1.add(menu_import_code);
+        jMenuBar1.add(jMenu8);
 
         jMenu3.setText("Ajuda");
         jMenuBar1.add(jMenu3);
@@ -334,7 +357,7 @@ public class Simulador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void menu_new_arqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_new_arqActionPerformed
-        NovaArquitetura newArq = new NovaArquitetura();
+        NovaArquitetura newArq = new NovaArquitetura(this);
         newArq.setVisible(true);
     }//GEN-LAST:event_menu_new_arqActionPerformed
 
@@ -345,6 +368,16 @@ public class Simulador extends javax.swing.JFrame {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void menu_import_arqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_import_arqActionPerformed
+        FileImport importFile = new FileImport(this, "arq");
+        importFile.setVisible(true);
+    }//GEN-LAST:event_menu_import_arqActionPerformed
+
+    private void menu_threadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_threadActionPerformed
+        FileImport importFile = new FileImport(this, "risc");
+        importFile.setVisible(true);
+    }//GEN-LAST:event_menu_threadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -379,28 +412,45 @@ public class Simulador extends javax.swing.JFrame {
                 new Simulador().setVisible(true);
             }
         });
+        
     }
+    
+    @Override
+    public void notifyView() {
+        String currentArqString = simuladorVM.processador.toString();
+        simuladorVM.saveProcessador();
+        System.out.println(currentArqString);
+        this.current_arq.setText(currentArqString);
+    }
+    
+    
+    
+    // Dados Simulação
+   SimuladorViewModel simuladorVM = SimuladorViewModel.instance;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PainelEstatisticas;
     private javax.swing.JSplitPane PainelPipeline;
+    private javax.swing.JLabel current_arq;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -413,7 +463,9 @@ public class Simulador extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JMenuItem menu_import_arq;
-    private javax.swing.JMenu menu_import_code;
     private javax.swing.JMenuItem menu_new_arq;
+    private javax.swing.JMenuItem menu_thread;
     // End of variables declaration//GEN-END:variables
+
+    
 }

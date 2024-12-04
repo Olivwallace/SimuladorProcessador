@@ -1,0 +1,6 @@
+.ini
+...name Arquitetura 3
+...type Escalar
+.suport SMT
+.thread 1
+.fim

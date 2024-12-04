@@ -15,7 +15,7 @@ public class Thread {
     private ArrayList<Instruction> instructions;
     private boolean isRunning;
     
-    Thread(String threadID, ArrayList<Instruction> instructions, boolean isRunning){
+    public Thread(String threadID, ArrayList<Instruction> instructions, boolean isRunning){
         this.threadID = threadID;
         this.instructions = instructions;
         this.isRunning = isRunning;

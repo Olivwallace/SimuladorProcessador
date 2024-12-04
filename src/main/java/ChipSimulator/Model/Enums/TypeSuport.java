@@ -14,11 +14,20 @@ public enum TypeSuport {
     BMT,
     SMT;
     
+    public static TypeSuport typeSuport(String type){
+        if (type != null) {
+            try {
+                return TypeSuport.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return NONE;
+            }
+        }
+        return NONE;
+    }
+    
     @Override
     public String toString(){
         switch(this){
-            case NONE:
-                return "Sem Suporte";
             case IMT:
                 return "IMT";
             case BMT:
@@ -26,6 +35,6 @@ public enum TypeSuport {
             case SMT:
                 return "SMT";
         }
-        return "";
+        return "Sem Suporte";
     }
 }
