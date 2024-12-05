@@ -1,6 +1,6 @@
 .ini
-...name Arquitetura 3
+...name Teste
 ...type Escalar
-.suport SMT
+.suport Sem Suporte
 .thread 1
 .fim

@@ -65,17 +65,17 @@ public class Pipeline {
     }
     
     public Integer runNextCicle(Integer cicle){
-        while(WB.size() > 0){
+        while(!WB.isEmpty()){
             Instruction i = WB.remove(0);
             i.setFinnishCycle(cicle);
         }
         
-        while(MEM.size() > 0){
+        while(!MEM.isEmpty()){
             Instruction i = MEM.remove(0);
             WB.add(i);
         }
         
-        while(EX.size() > 0){
+        while(!EX.isEmpty()){
             Instruction i = EX.remove(0);
             if(i.needMemory()){
                 MEM.add(i);
@@ -84,12 +84,12 @@ public class Pipeline {
             }
         }
         
-        while(EX.size() != numUnits){
+        while(!ID.isEmpty() && EX.size() != numUnits){
             Instruction i = ID.remove(0);
             EX.add(i);
         }
         
-        while(ID.size() != numUnits){
+        while(!IF.isEmpty() && ID.size() != numUnits){
             Instruction i = IF.remove(0);
             ID.add(i);
         }
@@ -98,5 +98,19 @@ public class Pipeline {
     }
     
     // Getters
-    
+    public ArrayList<Instruction> getIF(){
+        return IF;
+    }
+    public ArrayList<Instruction> getID(){
+        return ID;
+    }
+    public ArrayList<Instruction> getEX(){
+        return EX;
+    }
+    public ArrayList<Instruction> getMEM(){
+        return MEM;
+    }
+    public ArrayList<Instruction> getWB(){
+        return WB;
+    }
 }

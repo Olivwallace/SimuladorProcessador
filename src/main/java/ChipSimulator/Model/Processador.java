@@ -20,8 +20,8 @@ public class Processador {
     public Integer numThreads;
     
     // Pipeline Do Processador
-    ArrayList<Thread> threads = new ArrayList<>();
-    Pipeline pipeline;
+    public ArrayList<Thread> threads = new ArrayList<>();
+    public Pipeline pipeline;
     Integer cicloAtual = 0;
     
     private Integer currentThread = 0;
@@ -72,7 +72,7 @@ public class Processador {
     }
     
     public void executeDefault(){
-        Integer IFcapacity = pipeline.runNextCicle(++cicloAtual);
+        Integer IFcapacity = pipeline.runNextCicle(cicloAtual);
         
         int i = 0;
 
@@ -82,8 +82,10 @@ public class Processador {
             if(threads.get(currentThread).isFinnish){
                 currentThread++; 
             }
+            i++;
         }
         
+        cicloAtual++;
     }
     
     public void executeIMT(){

@@ -88,7 +88,7 @@ public class SimuladorViewModel {
     
     public void loadCode(String path){
         ArrayList<Thread> threads = new ArrayList();
-        ArrayList<Instruction> instructions = new ArrayList();
+        Integer currentThread = -1;
         
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line = reader.readLine();
@@ -100,8 +100,8 @@ public class SimuladorViewModel {
                 line = reader.readLine();
                 while(line != null && !line.contains(".fim")){
                     if(line.contains(".thread")){
-                        instructions = new ArrayList();
-                        threads.add(new Thread(StringUteis.randomID(5), instructions));
+                        threads.add(new Thread(StringUteis.randomID(5), new ArrayList()));
+                        currentThread++;
                     } else {
                         
                         String[] exp = StringUteis.parseInstruction(line);
@@ -116,7 +116,7 @@ public class SimuladorViewModel {
                             if(opCode != OpCode.INVALID_OPCODE && r1 != Registers.invalid_register && 
                                r2 != Registers.invalid_register && r3 != Registers.invalid_register) {
                                 
-                                instructions.add(new Instruction(opCode, new Registers[]{r1, r2, r3}, line));
+                                threads.get(currentThread).addNewInstruction(new Instruction(opCode, new Registers[]{r1, r2, r3}, line));
                             }
                         }
                     }

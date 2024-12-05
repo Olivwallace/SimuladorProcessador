@@ -11,8 +11,8 @@ import java.util.ArrayList;
  * @author Walla
  */
 public class Thread {
-    private final String threadID;
-    private final ArrayList<Instruction> instructions;
+    public final String threadID;
+    public final ArrayList<Instruction> instructions;
     public Integer pc = 0;
     public Integer numOfInstructions = 0;
     public Integer dispachInstructions = 0;
@@ -26,10 +26,12 @@ public class Thread {
     public Thread(String threadID, ArrayList<Instruction> instructions){
         this.threadID = threadID;
         this.instructions = instructions;
-        for(Instruction i : instructions){
-            i.setThreadOrigem(this.threadID);
-        }
-        this.numOfInstructions = instructions.size();
+    }
+    
+    public void addNewInstruction(Instruction i){
+        i.setThreadOrigem(this.threadID);
+        instructions.add(i);
+        numOfInstructions++;
     }
     
     public Instruction getNextInstruction(Integer ciclo){

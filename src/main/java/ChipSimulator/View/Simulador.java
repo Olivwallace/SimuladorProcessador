@@ -5,11 +5,14 @@
 package ChipSimulator.View;
 
 import ChipSimulator.Interfaces.Delegate;
+import ChipSimulator.Model.Instruction;
 import ChipSimulator.Model.Processador;
 import ViewModel.SimuladorViewModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -1050,7 +1053,8 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
     }//GEN-LAST:event_btn_automaticoActionPerformed
 
     private void btn_proxcicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_proxcicloActionPerformed
-        // TODO add your handling code here:
+        processador.execute();
+        atualizarView();
     }//GEN-LAST:event_btn_proxcicloActionPerformed
 
     private void menu_import_arqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_import_arqActionPerformed
@@ -1065,6 +1069,10 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
 
     private void btn_inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioActionPerformed
         processador.execute();
+        this.btn_proxciclo.setEnabled(true);
+        this.btn_automatico.setEnabled(false);
+        this.btn_inicio.setEnabled(false);
+        atualizarView();
     }//GEN-LAST:event_btn_inicioActionPerformed
 
     /**
@@ -1113,7 +1121,7 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
     
     public void atualizaEstatisticas(){
         Integer numPanel = this.painel_estatistica.getComponents().length;
-        if(numPanel < processador.numThreads){
+        if(numPanel < processador.numThreads + 1){
             addNewTab(processador.numThreads);
         }
         
@@ -1137,6 +1145,82 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
         this.painel_estatistica.repaint(); 
     }
     
+    public void atualizarView(){
+        if(threadColor.isEmpty()) {
+            for(int i = 0; i < processador.numThreads; i++){
+                threadColor.put(processador.threads.get(i).threadID, colors[i]);
+            }
+        }
+        
+        atualizaEstatisticas();
+        setIFLayout(processador.pipeline.getIF());
+        setIDLayout(processador.pipeline.getID());
+        setEXLayout(processador.pipeline.getEX());
+        setMEMLayout(processador.pipeline.getMEM());
+        setWBLayout(processador.pipeline.getWB());
+    }
+    
+    public void setIFLayout(ArrayList<Instruction> inst){
+        this.if_0.setBackground((inst.size() >= 1) ? threadColor.get(inst.get(0).getThread()) : Color.WHITE);
+        this.if_2.setBackground((inst.size() >= 2) ? threadColor.get(inst.get(1).getThread()) : Color.WHITE);
+        this.if_3.setBackground((inst.size() >= 3) ? threadColor.get(inst.get(2).getThread()) : Color.WHITE);
+        this.if_4.setBackground((inst.size() == 4) ? threadColor.get(inst.get(3).getThread()) : Color.WHITE);
+        
+        this.if_label_0.setText((inst.size() >= 1) ? inst.get(0).toString() : "");
+        this.if_label_2.setText((inst.size() >= 2) ? inst.get(1).toString() : "");
+        this.if_label_3.setText((inst.size() >= 3) ? inst.get(2).toString() : "");
+        this.if_label_4.setText((inst.size() == 4) ? inst.get(3).toString() : "");
+    }
+    
+    public void setIDLayout(ArrayList<Instruction> inst){
+        this.id_1.setBackground((inst.size() >= 1) ? threadColor.get(inst.get(0).getThread()) : Color.WHITE);
+        this.id_2.setBackground((inst.size() >= 2) ? threadColor.get(inst.get(1).getThread()) : Color.WHITE);
+        this.id_3.setBackground((inst.size() >= 3) ? threadColor.get(inst.get(2).getThread()) : Color.WHITE);
+        this.id_4.setBackground((inst.size() == 4) ? threadColor.get(inst.get(3).getThread()) : Color.WHITE);
+        
+        this.id_label_1.setText((inst.size() >= 1) ? inst.get(0).toString() : "");
+        this.id_label_2.setText((inst.size() >= 2) ? inst.get(1).toString() : "");
+        this.id_label_3.setText((inst.size() >= 3) ? inst.get(2).toString() : "");
+        this.id_label_4.setText((inst.size() == 4) ? inst.get(3).toString() : "");
+    }
+    
+    public void setEXLayout(ArrayList<Instruction> inst){
+        this.ex_1.setBackground((inst.size() >= 1) ? threadColor.get(inst.get(0).getThread()) : Color.WHITE);
+        this.ex_2.setBackground((inst.size() >= 2) ? threadColor.get(inst.get(1).getThread()) : Color.WHITE);
+        this.ex_3.setBackground((inst.size() >= 3) ? threadColor.get(inst.get(2).getThread()) : Color.WHITE);
+        this.ex_4.setBackground((inst.size() == 4) ? threadColor.get(inst.get(3).getThread()) : Color.WHITE);
+        
+        this.ex_label_1.setText((inst.size() >= 1) ? inst.get(0).toString() : "");
+        this.ex_label_2.setText((inst.size() >= 2) ? inst.get(1).toString() : "");
+        this.ex_label_3.setText((inst.size() >= 3) ? inst.get(2).toString() : "");
+        this.ex_label_4.setText((inst.size() == 4) ? inst.get(3).toString() : "");
+    }
+    
+    public void setMEMLayout(ArrayList<Instruction> inst){
+        this.mem_1.setBackground((inst.size() >= 1) ? threadColor.get(inst.get(0).getThread()) : Color.WHITE);
+        this.mem_2.setBackground((inst.size() >= 2) ? threadColor.get(inst.get(1).getThread()) : Color.WHITE);
+        this.mem_3.setBackground((inst.size() >= 3) ? threadColor.get(inst.get(2).getThread()) : Color.WHITE);
+        this.mem_4.setBackground((inst.size() == 4) ? threadColor.get(inst.get(3).getThread()) : Color.WHITE);
+        
+        this.mem_label_1.setText((inst.size() >= 1) ? inst.get(0).toString() : "");
+        this.mem_label_2.setText((inst.size() >= 2) ? inst.get(1).toString() : "");
+        this.mem_label_3.setText((inst.size() >= 3) ? inst.get(2).toString() : "");
+        this.mem_label_4.setText((inst.size() == 4) ? inst.get(3).toString() : "");
+    }
+    
+    public void setWBLayout(ArrayList<Instruction> inst){
+        this.wb_1.setBackground((inst.size() >= 1) ? threadColor.get(inst.get(0).getThread()) : Color.WHITE);
+        this.wb_2.setBackground((inst.size() >= 2) ? threadColor.get(inst.get(1).getThread()) : Color.WHITE);
+        this.wb_3.setBackground((inst.size() >= 3) ? threadColor.get(inst.get(2).getThread()) : Color.WHITE);
+        this.wb_4.setBackground((inst.size() == 4) ? threadColor.get(inst.get(3).getThread()) : Color.WHITE);
+        
+        this.wb_label_1.setText((inst.size() >= 1) ? inst.get(0).toString() : "");
+        this.wb_label_2.setText((inst.size() >= 2) ? inst.get(1).toString() : "");
+        this.wb_label_3.setText((inst.size() >= 3) ? inst.get(2).toString() : "");
+        this.wb_label_4.setText((inst.size() == 4) ? inst.get(3).toString() : "");
+    }
+        
+    
     public void habilitarBotoes(){
         boolean status = simuladorVM.hasCode && simuladorVM.hasArquitetura;
         this.btn_inicio.setEnabled(status);
@@ -1149,8 +1233,12 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
    SimuladorViewModel simuladorVM = SimuladorViewModel.instance;
    Processador processador = simuladorVM.processador;
    
+   // Cores
+   HashMap<String,Color> threadColor = new HashMap<>();
+   
    // Labels Threads
    private JLabel[] threadsLabel;
+   private Color[] colors = new Color[]{Color.cyan, Color.green, Color.orange, Color.yellow};
    
    private boolean isAutomatico = false;
    private boolean isPause = false;
