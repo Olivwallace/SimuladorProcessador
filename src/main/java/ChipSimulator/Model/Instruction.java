@@ -15,33 +15,41 @@ public class Instruction {
     private String threadOrigen;
     private OpCode opCode;
     private Registers[] registers;
-    private int cycleIni;
-    private int cycleFin;
+    private String instructionString;
+    private int cycleIni = -1;
+    private int cycleFin = -1;
     
-    public Instruction(String threadID, OpCode opCode, Registers out, Registers value1, Registers value2){
-        this.threadOrigen = threadID;
+    public Instruction(OpCode opCode, Registers[] registers, String instruction){
         this.opCode = opCode;
+    
+        instructionString = instruction;
         
-        registers = new Registers[3];
-        
-        registers[0] = out;
-        registers[1] = value1;
-        registers[2] = value2;
+        this.registers = registers;
     }
     
-    void setStartCycle(int cycle){
+    public void setThreadOrigem(String thread){
+        this.threadOrigen = thread;
+    }
+    
+    public void setStartCycle(int cycle){
         this.cycleIni = cycle;
     }
     
-    void setFinnishCycle(int cycle){
+    public void setFinnishCycle(int cycle){
         this.cycleFin = cycle;
     }
     
-    int getStartCycle(){
+    public int getStartCycle(){
         return this.cycleIni;
     }
     
-    int getFinnishCycle(){
+    public int getFinnishCycle(){
         return this.cycleFin;
+    }
+    
+   
+    @Override
+    public String toString(){
+        return this.instructionString;
     }
 }

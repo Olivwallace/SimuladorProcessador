@@ -18,7 +18,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 /**
  *
@@ -34,48 +33,51 @@ public class SimuladorViewModel {
         this.processador = new Processador();
     }
     
+    // --------------------------------------------- LOAD ARQS
+    
     public void saveProcessador(){
         String filePath = processador.nome + ".arq";
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(processador.getHardwareDescription());
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
     
     public void loadProcessador(String path){
+        String name = "", type = "", suport = "";
+        Integer num_threads = 1;
+        
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line = reader.readLine();
             while(line != null && !line.contains(".ini")){
                 line = reader.readLine();
             }
             
-            if (line.contains(".ini")){
+            if (line != null && line.contains(".ini")){
                 line = reader.readLine();
                 while(line != null && !line.contains(".fim")){
                     switch(line.substring(0, 7)){
-                        case "...name":
-                            processador.nome = line.substring(8);
-                            break;
-                        case "...type":
-                            processador.type = TypeProcessador.typeProcess(line.substring(8));
-                            break;
-                        case ".suport":
-                            processador.suport = TypeSuport.typeSuport(line.substring(8));
-                            break;
-                        case ".thread":
-                            Integer n = Integer.parseInt(line.substring(8));
-                            processador.numThreads = (n > 0 && n < 5) ? n : 1;
-                            break;
+                        case "...name" -> name = line.substring(8);
+                        case "...type" -> type = line.substring(8);
+                        case ".suport" -> suport = line.substring(8);
+                        case ".thread" -> {
+                            Integer n = Integer.valueOf(line.substring(8));
+                            num_threads = (n > 0 && n < 5) ? n : 1;
+                        }
                     }
                     
                     line = reader.readLine();
                 }
-            };
+            }
         } catch (IOException e) {
-            e.printStackTrace();
         }
+        
+        processador.setDefinicoes(
+                name, 
+                TypeProcessador.typeProcess(type), 
+                TypeSuport.typeSuport(suport), 
+                num_threads);
     }
     
     public void loadCode(String path){
@@ -88,15 +90,15 @@ public class SimuladorViewModel {
                 line = reader.readLine();
             }
             
-            if (line.contains(".ini")){
+            if (line != null && line.contains(".ini")){
                 line = reader.readLine();
-                String currentThreadId =  StringUteis.randomID(5);
                 while(line != null && !line.contains(".fim")){
                     if(line.contains(".thread")){
-                        threads.add(new Thread(currentThreadId, instructions, false));
-                        currentThreadId = StringUteis.randomID(5);
+                        instructions = new ArrayList();
+                        threads.add(new Thread(StringUteis.randomID(5), instructions));
                     } else {
-                        String[] exp = line.replaceAll("\\(", ",").replaceAll(",", " ").split(" ");
+                        
+                        String[] exp = StringUteis.parseInstruction(line);
                         
                         if(exp.length == 4) {
                         
@@ -108,16 +110,19 @@ public class SimuladorViewModel {
                             if(opCode != OpCode.INVALID_OPCODE && r1 != Registers.invalid_register && 
                                r2 != Registers.invalid_register && r3 != Registers.invalid_register) {
                                 
-                                instructions.add(new Instruction(currentThreadId, opCode, r1, r2, r3));
+                                instructions.add(new Instruction(opCode, new Registers[]{r1, r2, r3}, line));
                             }
                         }
                     }
                     
                     line = reader.readLine();
                 }
-            };
-        } catch (IOException e) {
-            e.printStackTrace();
+            }
+        } catch (IOException e) { 
+        }
+        
+        if (!threads.isEmpty()){
+            processador.setThreads(threads);
         }
     }
     

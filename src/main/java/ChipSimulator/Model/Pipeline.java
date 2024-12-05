@@ -5,6 +5,7 @@
 package ChipSimulator.Model;
 
 import ChipSimulator.Model.Enums.TypeProcessador;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,16 +14,9 @@ import java.util.List;
  */
 public class Pipeline {
     
-    private Thread[] threads;
     private Instruction[] IF, OF, EX, MEM, OS;
-    private int numUnits;
-    
-    
-    Pipeline(TypeProcessador type, Integer threads){
-        this.threads = new Thread[threads];
-        
-        this.numUnits = (type == TypeProcessador.Escalar) ? 1 : threads;
-        
+ 
+    public Pipeline(Integer numUnits){
         IF = new Instruction[numUnits];
         OF = new Instruction[numUnits];
         EX = new Instruction[numUnits];
@@ -30,9 +24,10 @@ public class Pipeline {
         OS = new Instruction[numUnits];
     }
     
-    public void setThreads(Thread[] threads){
-        this.threads = threads;
+    public void execultarCiclo(){
+        
     }
+    
     
     
     

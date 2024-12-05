@@ -28,7 +28,7 @@ public enum OpCode {
     public static OpCode opCodeFromString(String opCode){
         if (opCode != null) {
             try {
-                return OpCode.valueOf(opCode.toLowerCase());
+                return OpCode.valueOf(opCode.toUpperCase());
             } catch (IllegalArgumentException e) {
                 return INVALID_OPCODE;
             }

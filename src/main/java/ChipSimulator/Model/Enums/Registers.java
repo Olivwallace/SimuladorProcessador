@@ -45,7 +45,13 @@ public enum Registers {
             try {
                 return Registers.valueOf(register);
             } catch (IllegalArgumentException e) {
-                return invalid_register;
+                try {
+                    int imediato = Integer.parseInt(register);
+                    return Registers.im;
+                    
+                } catch (NumberFormatException er){
+                    return invalid_register;   
+                }
             }
         }
         return invalid_register;
