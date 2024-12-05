@@ -120,9 +120,9 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
         painel_estatistica = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         processador_estatistica = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btn_inicio = new javax.swing.JButton();
+        btn_automatico = new javax.swing.JButton();
+        btn_proxciclo = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menu_new_arq = new javax.swing.JMenuItem();
@@ -903,25 +903,33 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
 
         painel_estatistica.addTab("Processador", jPanel1);
 
-        jButton1.setText("Iniciar");
-        jButton1.setMaximumSize(new java.awt.Dimension(200, 50));
-        jButton1.setMinimumSize(new java.awt.Dimension(100, 28));
-
-        jButton2.setText("Automático");
-        jButton2.setMaximumSize(new java.awt.Dimension(200, 50));
-        jButton2.setMinimumSize(new java.awt.Dimension(100, 28));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_inicio.setText("Iniciar");
+        btn_inicio.setEnabled(false);
+        btn_inicio.setMaximumSize(new java.awt.Dimension(200, 50));
+        btn_inicio.setMinimumSize(new java.awt.Dimension(100, 28));
+        btn_inicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_inicioActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Próximo Ciclo");
-        jButton3.setMaximumSize(new java.awt.Dimension(200, 50));
-        jButton3.setMinimumSize(new java.awt.Dimension(100, 28));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btn_automatico.setText("Automático");
+        btn_automatico.setEnabled(false);
+        btn_automatico.setMaximumSize(new java.awt.Dimension(200, 50));
+        btn_automatico.setMinimumSize(new java.awt.Dimension(100, 28));
+        btn_automatico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btn_automaticoActionPerformed(evt);
+            }
+        });
+
+        btn_proxciclo.setText("Próximo Ciclo");
+        btn_proxciclo.setEnabled(false);
+        btn_proxciclo.setMaximumSize(new java.awt.Dimension(200, 50));
+        btn_proxciclo.setMinimumSize(new java.awt.Dimension(100, 28));
+        btn_proxciclo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_proxcicloActionPerformed(evt);
             }
         });
 
@@ -943,12 +951,12 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
                             .addComponent(painel_estatistica))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, PainelEstatisticasLayout.createSequentialGroup()
                             .addContainerGap()
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btn_inicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(PainelEstatisticasLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(PainelEstatisticasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btn_automatico, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_proxciclo, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         PainelEstatisticasLayout.setVerticalGroup(
@@ -963,11 +971,11 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painel_estatistica, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_proxciclo, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_automatico, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1023,7 +1031,7 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(PainelEstatisticas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+            .addComponent(PainelEstatisticas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 635, Short.MAX_VALUE)
         );
 
         PainelEstatisticas.getAccessibleContext().setAccessibleName("");
@@ -1037,13 +1045,13 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
         newArq.setVisible(true);
     }//GEN-LAST:event_menu_new_arqActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btn_automaticoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_automaticoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btn_automaticoActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btn_proxcicloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_proxcicloActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btn_proxcicloActionPerformed
 
     private void menu_import_arqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_import_arqActionPerformed
         FileImport importFile = new FileImport(this, "arq");
@@ -1054,6 +1062,10 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
         FileImport importFile = new FileImport(this, "risc");
         importFile.setVisible(true);
     }//GEN-LAST:event_menu_threadActionPerformed
+
+    private void btn_inicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_inicioActionPerformed
+        processador.execute();
+    }//GEN-LAST:event_btn_inicioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1093,24 +1105,22 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
     
     @Override
     public void notifyView() {
-        Processador p = simuladorVM.processador;
         simuladorVM.saveProcessador();
-        this.current_arq.setText(p.toString());
+        this.current_arq.setText(processador.toString());
         atualizaEstatisticas();
+        habilitarBotoes();
     }
     
     public void atualizaEstatisticas(){
-        Processador p = simuladorVM.processador;
-        
         Integer numPanel = this.painel_estatistica.getComponents().length;
-        if(numPanel < p.numThreads){
-            addNewTab(p.numThreads);
+        if(numPanel < processador.numThreads){
+            addNewTab(processador.numThreads);
         }
         
-        processador_estatistica.setText(p.getEstatisticas());
+        processador_estatistica.setText(processador.getEstatisticas());
         
-        for(int i = 0; i < p.numThreads; i++){
-            threadsLabel[i].setText(p.getEstatisticas(i));
+        for(int i = 0; i < processador.numThreads; i++){
+            threadsLabel[i].setText(processador.getEstatisticas(i));
         }
     }
     
@@ -1127,17 +1137,31 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
         this.painel_estatistica.repaint(); 
     }
     
+    public void habilitarBotoes(){
+        boolean status = simuladorVM.hasCode && simuladorVM.hasArquitetura;
+        this.btn_inicio.setEnabled(status);
+        this.btn_automatico.setEnabled(status);
+    }
+    
     
     
     // Dados Simulação
    SimuladorViewModel simuladorVM = SimuladorViewModel.instance;
+   Processador processador = simuladorVM.processador;
    
    // Labels Threads
    private JLabel[] threadsLabel;
+   
+   private boolean isAutomatico = false;
+   private boolean isPause = false;
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PainelEstatisticas;
     private javax.swing.JSplitPane PainelPipeline;
+    private javax.swing.JButton btn_automatico;
+    private javax.swing.JButton btn_inicio;
+    private javax.swing.JButton btn_proxciclo;
     private javax.swing.JLabel current_arq;
     private javax.swing.JPanel ex_1;
     private javax.swing.JPanel ex_2;
@@ -1163,9 +1187,6 @@ public class Simulador extends javax.swing.JFrame implements Delegate {
     private javax.swing.JLabel if_label_2;
     private javax.swing.JLabel if_label_3;
     private javax.swing.JLabel if_label_4;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

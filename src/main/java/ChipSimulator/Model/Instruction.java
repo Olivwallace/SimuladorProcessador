@@ -47,6 +47,26 @@ public class Instruction {
         return this.cycleFin;
     }
     
+    public Registers getR1(){
+        return registers[0];
+    }
+    
+    public Registers getR2(){
+        return registers[1];
+    }
+    
+    public Registers getR3(){
+        return registers[2];
+    }
+    
+    public String getThread(){
+        return this.threadOrigen;
+    }
+    
+    public boolean needMemory(){
+        return opCode == OpCode.LW || opCode == OpCode.SW;
+    }
+    
    
     @Override
     public String toString(){

@@ -27,6 +27,9 @@ public class SimuladorViewModel {
     
     public static SimuladorViewModel instance = new SimuladorViewModel();
     
+    public boolean hasArquitetura = false;
+    public boolean hasCode = false;
+    
     public Processador processador;
     
     private SimuladorViewModel(){
@@ -40,6 +43,7 @@ public class SimuladorViewModel {
         
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write(processador.getHardwareDescription());
+            setHasArquitetura();
         } catch (IOException e) {
         }
     }
@@ -78,6 +82,8 @@ public class SimuladorViewModel {
                 TypeProcessador.typeProcess(type), 
                 TypeSuport.typeSuport(suport), 
                 num_threads);
+        
+        setHasArquitetura();
     }
     
     public void loadCode(String path){
@@ -123,7 +129,16 @@ public class SimuladorViewModel {
         
         if (!threads.isEmpty()){
             processador.setThreads(threads);
+            setHasCode();
         }
+    }
+    
+    public void setHasArquitetura(){
+        this.hasArquitetura = true;
+    }
+    
+    public void setHasCode(){
+        this.hasCode = true;
     }
     
     

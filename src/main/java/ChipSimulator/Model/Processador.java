@@ -22,7 +22,9 @@ public class Processador {
     // Pipeline Do Processador
     ArrayList<Thread> threads = new ArrayList<>();
     Pipeline pipeline;
-    Integer cicloAtual;
+    Integer cicloAtual = 0;
+    
+    private Integer currentThread = 0;
     
     // Informações Uteis
     Integer IPC = 0;
@@ -52,7 +54,53 @@ public class Processador {
         this.threads = threads;
     }
     
+    public void execute(){
+        switch(this.suport){
+            case IMT:
+                executeIMT();
+                break;
+            case BMT:
+                executeBMT();
+                break;
+            case SMT:
+                executeSMT();
+                break;
+            case NONE:
+                executeDefault();
+                break;
+        }
+    }
     
+    public void executeDefault(){
+        Integer IFcapacity = pipeline.runNextCicle(++cicloAtual);
+        
+        int i = 0;
+
+        while(i < IFcapacity && currentThread < threads.size()){
+            pipeline.fetch(threads.get(currentThread).getNextInstruction(cicloAtual));
+            
+            if(threads.get(currentThread).isFinnish){
+                currentThread++; 
+            }
+        }
+        
+    }
+    
+    public void executeIMT(){
+        
+    }
+    
+    public void executeBMT(){
+        
+    }
+    
+    public void executeSMT(){
+        
+    }
+    
+    public void getCurrentThread(){
+        
+    }
     
     @Override
     public String toString(){

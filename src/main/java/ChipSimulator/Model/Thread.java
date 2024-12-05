@@ -21,6 +21,7 @@ public class Thread {
     public Integer cicloInicioThread = -1;
     public Integer cicloFimThread = -1;
     public Integer cicloFimUltimaInst = -1;
+    public boolean isFinnish = false;
     
     public Thread(String threadID, ArrayList<Instruction> instructions){
         this.threadID = threadID;
@@ -42,6 +43,7 @@ public class Thread {
             instruction = instructions.get(pc);
             dispachInstructions++;
             pc++;
+            isFinnish = (pc >= numOfInstructions);
         }
         return instruction;
     }
