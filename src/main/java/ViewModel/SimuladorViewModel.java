@@ -116,7 +116,9 @@ public class SimuladorViewModel {
                             if(opCode != OpCode.INVALID_OPCODE && r1 != Registers.invalid_register && 
                                r2 != Registers.invalid_register && r3 != Registers.invalid_register) {
                                 
-                                threads.get(currentThread).addNewInstruction(new Instruction(opCode, new Registers[]{r1, r2, r3}, line));
+                                threads.get(currentThread).addNewInstruction(
+                                        new Instruction(StringUteis.randomID(5),opCode, 
+                                        new Registers[]{r1, r2, r3}, line));
                             }
                         }
                     }

@@ -1,12 +1,17 @@
 .ini
 .thread
-add $s1, $s2, $s3
-lw $s1, 0($s2)
-add $s1, $s2, $s3
-addi $s1, $s2, 100
+lw $t0, 0($t1)
+lw $t0, 0($t1)
+add $t1, $t0, $s3
+add $t1, $t1, $s6
 .thread
-add $s1, $s2, $s3
-lw $s1, 0($s2)
-add $s1, $s2, $s3
-addi $s1, $s2, 100
+lw $t0, 0($t1)
+add $t1, $t1, $s6
+add $t1, $t0, $t1
+add $s0, $s1, $t0
+.thread
+lw $t0, 0($t1)
+add $t1, $t1, $s6
+add $t1, $t0, $t1
+add $s0, $s1, $t0
 .fim

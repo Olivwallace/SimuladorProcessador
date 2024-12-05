@@ -1,5 +1,8 @@
+C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Interfaces\CallabackProcessador.java
 C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Interfaces\Delegate.java
+C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\Dependencias.java
 C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\OpCode.java
+C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\PipelineState.java
 C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\Registers.java
 C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\TypeProcessador.java
 C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\TypeSuport.java

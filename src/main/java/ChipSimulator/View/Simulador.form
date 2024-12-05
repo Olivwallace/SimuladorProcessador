@@ -1451,7 +1451,6 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel6">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jLabel6"/>
                         <Property name="verticalAlignment" type="int" value="1"/>
                       </Properties>
                     </Component>
@@ -1502,7 +1501,7 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btn_automatico" min="-2" pref="380" max="-2" attributes="0"/>
+                              <Component id="btn_reiniciar" min="-2" pref="380" max="-2" attributes="0"/>
                               <Component id="btn_proxciclo" alignment="0" min="-2" pref="380" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -1527,7 +1526,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_proxciclo" min="-2" pref="55" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btn_automatico" min="-2" pref="55" max="-2" attributes="0"/>
+                  <Component id="btn_reiniciar" min="-2" pref="55" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -1630,9 +1629,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_inicioActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btn_automatico">
+        <Component class="javax.swing.JButton" name="btn_reiniciar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Autom&#xe1;tico"/>
+            <Property name="text" type="java.lang.String" value="Reiniciar"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[200, 50]"/>
@@ -1642,7 +1641,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_automaticoActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_reiniciarActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_proxciclo">

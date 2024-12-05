@@ -1,4 +1,8 @@
 ChipSimulator\Model\Enums\TypeProcessador$1.class
 ChipSimulator\View\NovaArquitetura.class
+ChipSimulator\Model\Processador$1.class
+ChipSimulator\Model\Enums\PipelineState.class
 ChipSimulator\Model\Enums\TypeSuport$1.class
 ChipSimulator\View\NovaArquitetura$1.class
+ChipSimulator\Interfaces\CallabackProcessador.class
+ChipSimulator\Model\Enums\Dependencias.class

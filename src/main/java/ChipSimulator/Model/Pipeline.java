@@ -4,6 +4,8 @@
  */
 package ChipSimulator.Model;
 
+import ChipSimulator.Interfaces.CallabackProcessador;
+import ChipSimulator.Model.Enums.PipelineState;
 import ChipSimulator.Model.Enums.Registers;
 import ChipSimulator.Model.Enums.TypeProcessador;
 import java.util.ArrayList;
@@ -17,9 +19,18 @@ import java.util.List;
 public class Pipeline {
     
     private ArrayList<Instruction> IF, ID, EX, MEM, WB;
+    private CallabackProcessador delegate;
     private Integer numUnits;
     
-    public Pipeline(Integer numUnits){
+    public void reiniciar(){
+        IF.clear();
+        ID.clear();
+        EX.clear();
+        MEM.clear();
+        WB.clear();
+    }
+    
+    public Pipeline(Integer numUnits, CallabackProcessador delegate){
         IF = new ArrayList<>();
         ID = new ArrayList<>();
         EX = new ArrayList<>();
@@ -27,10 +38,12 @@ public class Pipeline {
         WB = new ArrayList<>();
         
         this.numUnits = numUnits;
+        this.delegate = delegate;
     }
     
     public Integer fetch(Instruction inst){
         if(IF.size() < numUnits){
+            inst.state = PipelineState.IF;
             IF.add(inst);
         }
         return numUnits - IF.size();
@@ -38,6 +51,7 @@ public class Pipeline {
     
     private Integer decode(Instruction inst){
         if(ID.size() < numUnits){
+            inst.state = PipelineState.ID;
             ID.add(inst);
         }
         return numUnits - ID.size();
@@ -45,6 +59,7 @@ public class Pipeline {
     
     private Integer execute(Instruction inst){
         if(EX.size() < numUnits){
+            inst.state = PipelineState.EX;
             EX.add(inst);
         }
         return numUnits - EX.size();
@@ -52,6 +67,7 @@ public class Pipeline {
     
     private Integer memory(Instruction inst){
         if(MEM.size() < numUnits){
+            inst.state = PipelineState.MEM;
             MEM.add(inst);
         }
         return numUnits - IF.size();
@@ -59,6 +75,7 @@ public class Pipeline {
     
     private Integer wb(Instruction inst){
         if(WB.size() < numUnits){
+            inst.state = PipelineState.WB;
             WB.add(inst);
         }
         return numUnits - WB.size();
@@ -68,33 +85,37 @@ public class Pipeline {
         while(!WB.isEmpty()){
             Instruction i = WB.remove(0);
             i.setFinnishCycle(cicle);
+            delegate.notifyEndInstruction(i);
         }
         
         while(!MEM.isEmpty()){
             Instruction i = MEM.remove(0);
-            WB.add(i);
+            wb(i);
         }
         
-        while(!EX.isEmpty()){
+        while(!EX.isEmpty() && MEM.size() != numUnits){
             Instruction i = EX.remove(0);
-            if(i.needMemory()){
-                MEM.add(i);
-            } else {
-                WB.add(i);
-            }
+            memory(i);
         }
         
         while(!ID.isEmpty() && EX.size() != numUnits){
             Instruction i = ID.remove(0);
-            EX.add(i);
+            if(!delegate.hasDependencia(i)){
+                execute(i);
+            } else {
+                execute(new Instruction(i.getThread()));
+                delegate.notifyBolha(i);
+                decode(i);
+            }
+            
         }
         
         while(!IF.isEmpty() && ID.size() != numUnits){
             Instruction i = IF.remove(0);
-            ID.add(i);
+            decode(i);
         }
         
-        return numUnits - ID.size();
+        return numUnits - IF.size();
     }
     
     // Getters

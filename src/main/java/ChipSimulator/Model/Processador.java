@@ -4,15 +4,18 @@
  */
 package ChipSimulator.Model;
 
+import ChipSimulator.Interfaces.CallabackProcessador;
 import ChipSimulator.Model.Enums.TypeProcessador;
 import ChipSimulator.Model.Enums.TypeSuport;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  *
  * @author Walla
  */
-public class Processador {
+public class Processador implements CallabackProcessador {
     // Definições do Processador
     public String nome;
     public TypeProcessador type;
@@ -20,19 +23,39 @@ public class Processador {
     public Integer numThreads;
     
     // Pipeline Do Processador
+    public HashMap<String,Integer> indexThread = new HashMap<>();
     public ArrayList<Thread> threads = new ArrayList<>();
     public Pipeline pipeline;
     Integer cicloAtual = 0;
     
     private Integer currentThread = 0;
+    private Integer BMTBlock = 0;
     
     // Informações Uteis
     Integer IPC = 0;
     Integer ciclos = 0;
     Integer ciclosBolha = 0;
     Integer instrucoesEx = 0;
+    Integer instrucoesFinalizadas = 0;
     Integer threadsFinalizas = 0;
-    
+   
+    public void reiniciar(){
+        IPC = 0;
+        ciclos = 0;
+        ciclosBolha = 0;
+        instrucoesEx = 0;
+        threadsFinalizas = 0;
+        currentThread = 0;
+        instrucoesFinalizadas = 0;
+        cicloAtual = 0;
+        
+        pipeline.reiniciar();
+        
+        for(Thread t : threads){
+            t.reiniciar();
+        }
+    }
+        
     
     public Processador(){
         this.nome = "";
@@ -47,11 +70,14 @@ public class Processador {
         this.suport = suport;
         this.numThreads = numThreads;
         
-        pipeline = new Pipeline(numThreads);
+        pipeline = new Pipeline(numThreads, this);
     }
     
     public void setThreads(ArrayList<Thread> threads){
         this.threads = threads;
+        for(int i = 0; i < threads.size(); i++){
+            indexThread.put(threads.get(i).threadID, i);
+        }
     }
     
     public void execute(){
@@ -81,6 +107,7 @@ public class Processador {
             
             if(threads.get(currentThread).isFinnish){
                 currentThread++; 
+                threadsFinalizas++;
             }
             i++;
         }
@@ -89,11 +116,56 @@ public class Processador {
     }
     
     public void executeIMT(){
+        Integer IFcapacity = pipeline.runNextCicle(cicloAtual);
         
+        int i = 0;
+
+        while(i < IFcapacity && (threadsFinalizas < threads.size())){
+            
+            if(currentThread == threads.size()){
+                currentThread = 0;
+            }
+            
+            if(threads.get(currentThread).isFinnish){
+                threadsFinalizas++;
+            } else {
+                pipeline.fetch(threads.get(currentThread++).getNextInstruction(cicloAtual));
+                i++;
+            }
+            
+        }
+        
+        cicloAtual++;
     }
     
     public void executeBMT(){
+         Integer IFcapacity = pipeline.runNextCicle(cicloAtual);
         
+        int i = 0;
+
+        while(i < IFcapacity && (threadsFinalizas < threads.size())){
+            
+            if(currentThread == threads.size()){
+                currentThread = 0;
+            }
+            
+            if(threads.get(currentThread).isFinnish){
+                threadsFinalizas++;
+                BMTBlock = 0;
+            } else {
+                pipeline.fetch(threads.get(currentThread).getNextInstruction(cicloAtual));
+                BMTBlock++;
+                i++;
+            }
+            
+            if(BMTBlock == 3){
+                BMTBlock = 0;
+                currentThread++;
+            }
+            
+        }
+        
+        cicloAtual++;
     }
     
     public void executeSMT(){
@@ -102,6 +174,31 @@ public class Processador {
     
     public void getCurrentThread(){
         
+    }
+    
+    public void notifyEndInstruction(Instruction i){
+        Integer index = indexThread.get(i.getThread());
+        if(index < threads.size()){
+            threads.get(index).endInstruction(i,cicloAtual);
+            instrucoesFinalizadas++;
+        }
+    }
+    
+    public boolean hasDependencia(Instruction i){
+        boolean has = false;
+        Integer index = indexThread.get(i.getThread());
+        if(index < threads.size()){
+            has = threads.get(index).hasDependecia(i);
+        }
+        
+        return has;
+    }
+    
+    public void notifyBolha(Instruction i){
+        Integer index = indexThread.get(i.getThread());
+        if(index < threads.size()){
+            threads.get(index).notifyBolha();
+        }
     }
     
     @Override

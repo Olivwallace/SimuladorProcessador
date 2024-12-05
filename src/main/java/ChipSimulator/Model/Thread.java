@@ -4,6 +4,7 @@
  */
 package ChipSimulator.Model;
 
+import ChipSimulator.Model.Enums.Dependencias;
 import java.util.ArrayList;
 
 /**
@@ -16,12 +17,29 @@ public class Thread {
     public Integer pc = 0;
     public Integer numOfInstructions = 0;
     public Integer dispachInstructions = 0;
+    public ArrayList<Instruction> currentPipelineInstructions = new ArrayList<>();
     public Integer countFinnishInstructions = 0;
     public Integer numOfBolhas = 0;
     public Integer cicloInicioThread = -1;
     public Integer cicloFimThread = -1;
     public Integer cicloFimUltimaInst = -1;
     public boolean isFinnish = false;
+    
+    public void reiniciar(){
+        pc = 0;
+        dispachInstructions = 0;
+        countFinnishInstructions = 0;
+        currentPipelineInstructions = new ArrayList<>();
+        numOfBolhas = 0;
+        cicloInicioThread = -1;
+        cicloFimThread = -1;
+        cicloFimUltimaInst = -1;
+        isFinnish = false;
+        
+        for(Instruction i : instructions){
+            i.reiniciar();
+        }
+    }
     
     public Thread(String threadID, ArrayList<Instruction> instructions){
         this.threadID = threadID;
@@ -44,25 +62,42 @@ public class Thread {
             
             instruction = instructions.get(pc);
             dispachInstructions++;
+            currentPipelineInstructions.add(instruction);
             pc++;
             isFinnish = (pc >= numOfInstructions);
         }
         return instruction;
     }
     
-    public void incrementFinnish(Integer ciclo){
+    public void endInstruction(Instruction i, Integer ciclo){
         this.countFinnishInstructions++;
         this.cicloFimUltimaInst = ciclo;
+        
+        currentPipelineInstructions.remove(i);
         
         if(pc >= numOfInstructions){
             cicloFimThread = ciclo;
         }
     }
     
-    public void incrementBolha(){
+    public void notifyBolha(){
         this.numOfBolhas++;
     }
     
+    public boolean hasDependecia(Instruction i){
+        boolean hasDependencia = false;
+        
+        for (Instruction it : currentPipelineInstructions) {
+            if(i.state.value <= it.state.value){
+                Dependencias d = i.comparaDependecia(it);
+                if(!i.hasAdiantamento(it) && d == Dependencias.Verdadeira){
+                    hasDependencia = true; 
+                }
+            }
+        }
+        
+        return hasDependencia;
+    }
     
     // Getters
     public String getCicloIni(){
@@ -80,7 +115,7 @@ public class Thread {
     public String getCPI(){
         String cpi = "-";
         if(countFinnishInstructions > 0){
-            cpi = String.valueOf((cicloFimUltimaInst - cicloInicioThread) / countFinnishInstructions);
+            cpi = String.valueOf((cicloFimUltimaInst - cicloInicioThread) / dispachInstructions);
         } 
         return cpi;
     }

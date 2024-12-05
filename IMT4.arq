@@ -1,0 +1,6 @@
+.ini
+...name IMT4
+...type Escalar
+.suport IMT
+.thread 4
+.fim
