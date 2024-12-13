@@ -1,0 +1,27 @@
+.ini
+.thread
+lw $t3, 0($s3)
+sw $t6, 0($s3)
+add $t4, $t3, $s2
+sub $t2, $t3, $t4
+mult $t5, $t2, $s6
+sw $t5, 8($s0)
+.thread
+lw $t7, 4($s5)
+add $t8, $t7, $t1
+sll $t7, $t7, 2
+add $t8, $t8, $t7
+sw $t8, 12($s1)
+.thread
+lw $s2, 8($s0)
+sll $t9, $s2, 3
+sub $t9, $t9, $s3
+mult $t6, $t9, $s4
+sw $t6, 16($s5)
+.thread
+lw $t3, 0($s3)
+add $t4, $t3, $s2
+sub $t3, $t3, $t4
+mult $t5, $t3, $s6
+sw $t5, 8($s0)
+.fim

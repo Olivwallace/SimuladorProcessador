@@ -4,20 +4,19 @@
  */
 package ViewModel;
 
-import ChipSimulator.Model.Enums.OpCode;
-import ChipSimulator.Model.Enums.Registers;
-import ChipSimulator.Model.Enums.TypeProcessador;
-import ChipSimulator.Model.Enums.TypeSuport;
-import ChipSimulator.Model.Instruction;
-import ChipSimulator.Model.Processador;
-import ChipSimulator.Model.Thread;
-import ChipSimulator.Uteis.StringUteis;
+import Enums.CPUSuport;
+import Enums.OPCode;
+import Models.CPU;
+import Models.Instruction;
+import Models.PipelineStage;
+import Models.ProcessThread;
+import Uteis.StringUteis;
+import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -25,69 +24,58 @@ import java.util.ArrayList;
  */
 public class SimuladorViewModel {
     
-    public static SimuladorViewModel instance = new SimuladorViewModel();
+    private final CPU cpu = new CPU();
+    private boolean isStart = false;
+    private HashMap<String,Color> threadColor = new HashMap<>(); 
+    private final Color[] colors = new Color[]{Color.CYAN, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.RED}; 
     
-    public boolean hasArquitetura = false;
-    public boolean hasCode = false;
-    
-    public Processador processador;
-    
-    private SimuladorViewModel(){
-        this.processador = new Processador();
-    }
-    
-    // --------------------------------------------- LOAD ARQS
-    
-    public void saveProcessador(){
-        String filePath = processador.nome + ".arq";
+    // Run
+    public void runCycle(boolean isAuto){
+        if(!isStart) isStart = true;
         
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(processador.getHardwareDescription());
-            setHasArquitetura();
-        } catch (IOException e) {
+        if (!isAuto){
+            cpu.runCycle();
         }
     }
     
-    public void loadProcessador(String path){
-        String name = "", type = "", suport = "";
-        Integer num_threads = 1;
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line = reader.readLine();
-            while(line != null && !line.contains(".ini")){
-                line = reader.readLine();
-            }
-            
-            if (line != null && line.contains(".ini")){
-                line = reader.readLine();
-                while(line != null && !line.contains(".fim")){
-                    switch(line.substring(0, 7)){
-                        case "...name" -> name = line.substring(8);
-                        case "...type" -> type = line.substring(8);
-                        case ".suport" -> suport = line.substring(8);
-                        case ".thread" -> {
-                            Integer n = Integer.valueOf(line.substring(8));
-                            num_threads = (n > 0 && n < 5) ? n : 1;
-                        }
-                    }
-                    
-                    line = reader.readLine();
-                }
-            }
-        } catch (IOException e) {
-        }
-        
-        processador.setDefinicoes(
-                name, 
-                TypeProcessador.typeProcess(type), 
-                TypeSuport.typeSuport(suport), 
-                num_threads);
-        
-        setHasArquitetura();
+    // Setters
+    public void setSuport(CPUSuport suport){
+        cpu.setCpuSuport(suport);
     }
     
-    public void loadCode(String path){
-        ArrayList<Thread> threads = new ArrayList();
+    public void setCPUMode(boolean isSuperScalar){
+        cpu.setIsSuportScalar(isSuperScalar);
+    }
+    
+    // Getters
+    public boolean enableInitMode(){
+       return cpu.isPossibleStart();
+    }
+    
+    public boolean getIsSuperScalar(){
+        return cpu.getIsSuperScalar();
+    }
+    
+    public CPUSuport getSuport(){
+        return cpu.getCPUSuport();
+    }
+    
+    public boolean isStart(){
+        return isStart;    
+    }
+    
+    public ArrayList<PipelineStage> getStagesValues(){
+        return cpu.getStagesValues();
+    }
+    
+    public ArrayList<Instruction> getBuffer(){
+        return cpu.getBufferReorder();
+    }
+    
+    // Methods
+    
+    public void processCode(String path){
+        ArrayList<ProcessThread> threads = new ArrayList();
         Integer currentThread = -1;
         
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
@@ -100,26 +88,15 @@ public class SimuladorViewModel {
                 line = reader.readLine();
                 while(line != null && !line.contains(".fim")){
                     if(line.contains(".thread")){
-                        threads.add(new Thread(StringUteis.randomID(5), new ArrayList()));
+                        ProcessThread t = new ProcessThread();
+                        t.setID(StringUteis.randomID(5));
+                        t.setInstructions(new ArrayList());
+                        threads.add(t);
                         currentThread++;
                     } else {
-                        
-                        String[] exp = StringUteis.parseInstruction(line);
-                        
-                        if(exp.length == 4) {
-                        
-                            OpCode opCode = OpCode.opCodeFromString(exp[0]);
-                            Registers r1 = Registers.registerFromString(exp[1]);
-                            Registers r2 = Registers.registerFromString(exp[2]);
-                            Registers r3 = Registers.registerFromString(exp[3]);
-                            
-                            if(opCode != OpCode.INVALID_OPCODE && r1 != Registers.invalid_register && 
-                               r2 != Registers.invalid_register && r3 != Registers.invalid_register) {
-                                
-                                threads.get(currentThread).addNewInstruction(
-                                        new Instruction(StringUteis.randomID(5),opCode, 
-                                        new Registers[]{r1, r2, r3}, line));
-                            }
+                        Instruction i = Instruction.instructionForString(line);
+                        if(i != null){
+                            threads.get(currentThread).addInstruction(i);
                         }
                     }
                     
@@ -127,21 +104,45 @@ public class SimuladorViewModel {
                 }
             }
         } catch (IOException e) { 
+            e.printStackTrace();
         }
         
         if (!threads.isEmpty()){
-            processador.setThreads(threads);
-            setHasCode();
+            cpu.setThreads(threads);
+            for(int i = 0; i < threads.size(); i++){
+                threadColor.put(threads.get(i).getID(), colors[i % colors.length]);
+            }
         }
     }
     
-    public void setHasArquitetura(){
-        this.hasArquitetura = true;
+    public Color getColorInstruction(Instruction i){
+        return threadColor.get(i.getThreadID());
+    }
+
+    public String setInformations() {
+        
+        return String.format(
+        """
+        <html>
+        <b>Ciclo atual:</b> %d<br>
+        <b>CPI: </b> %.2f <br>
+        <b>IPC: </b> %.2f <br>    
+        <b>Bolhas: </b> %d<br>
+        <b>Instruções Despachadas: </b> %d <br>
+        <b>Instruções Finalizadas: </b> %d
+        </html>
+        """, 
+        cpu.getCurrentCycle(),
+        cpu.getCurrentCPI(),
+        cpu.getCurrentIPC(),
+        cpu.getNumOfBubble(),
+        cpu.getNumOfDispatchInstructions(),
+        cpu.getNumOfInstructionEnd());
+        
+        
     }
     
-    public void setHasCode(){
-        this.hasCode = true;
+    public void restart(){
+        cpu.restart();
     }
-    
-    
 }

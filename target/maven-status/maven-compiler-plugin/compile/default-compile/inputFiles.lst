@@ -1,17 +1,30 @@
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Interfaces\CallabackProcessador.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Interfaces\Delegate.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\Dependencias.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\OpCode.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\PipelineState.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\Registers.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\TypeProcessador.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Enums\TypeSuport.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Instruction.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Pipeline.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Processador.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Model\Thread.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\Uteis\StringUteis.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\View\FileImport.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\View\NovaArquitetura.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ChipSimulator\View\Simulador.java
-C:\Users\Walla\Desktop\Arquitetura\SimuladorProcessador\src\main\java\ViewModel\SimuladorViewModel.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\com\simulador_processador\processador\Processador.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Enums\CPUSuport.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Enums\OPCode.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Enums\PipelineStageEnum.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Enums\Registers.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Enums\UnitExeOpCode.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Interfaces\EstatisticasDelegate.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Interfaces\FileImportDelegate.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Interfaces\PipelineDelegate.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Interfaces\PipelineViewDelegate.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\BankOfRegister.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\BufferReorder.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\CPU.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\Escalar\PipelineScalar.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\Instruction.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\Pipeline.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\PipelineStage.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\ProcessThread.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\ReorderBufferItem.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Models\SuperEscalar\PipelineSuperScalar.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Uteis\CheckDependency.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Uteis\StringUteis.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\ViewModel\SimuladorViewModel.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\Estatisticas.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\FileImport.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\PipelineEscalar.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\PipelineSuperEscalar.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\Simulador.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\Teste.java
+C:\Users\Walla\Downloads\Processador (2)\Processador\src\main\java\Views\TesteMaldito.java
